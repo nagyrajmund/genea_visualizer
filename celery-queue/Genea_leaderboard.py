@@ -640,42 +640,42 @@ def render_segments_in_cmd():
             main(ARG_AUDIO_LOCATION, SMPLX_TAKE_IN=ARG_NPZ_FILE)
             create_scene.clear_character()
             
-    if ARG_NPZ_FILE is not None and ARG_NPZ_DIR is not None:
-        print('Please provide either a specific file or a directory of files. Not both at the same time!')
-        exit()
-    
-    if ARG_NPZ_FILE is not None:
-        ARG_NPZ_FILE = load_data.check_files_npz(ARG_NPZ_FILE.parent, ARG_NPZ_FILE.stem, args['input_npz_dataset_directory'], ARG_NPZ_DATASET_FILENAME)
-        print(ARG_NPZ_FILE)
-        main(ARG_AUDIO_LOCATION, SMPLX_TAKE_IN=ARG_NPZ_FILE)
-        create_scene.clear_character()
-        
-    if ARG_NPZ_DIR is not None:
-        SMPLX_LOCATION = ARG_NPZ_DIR
-        # SMPLX_TAKE = myPath(str(SMPLX_LOCATION) + '/' + SMPLX_FILENAME_IN + '.npz')
-        # print('write data to this one: ' + str(SMPLX_TAKE))
-        
-        if args['render_time'] is not False:
-            renderTime = 0
-            renderTime = compute_render_time(str(SMPLX_LOCATION))
-            print(renderTime)
-            print(float(renderTime/60/60/24))
+        if ARG_NPZ_FILE is not None and ARG_NPZ_DIR is not None:
+            print('Please provide either a specific file or a directory of files. Not both at the same time!')
             exit()
         
-        files = [f for f in os.listdir(SMPLX_LOCATION)]
-        i = 0
-        
-        for file in files:
-            
-            if not file.endswith(".npz"):
-                continue
-            
-            # This needs to check for filename comparison and such
-            ARG_NPZ_FILE = load_data.check_files_npz(SMPLX_LOCATION, os.path.splitext(file)[0], args['input_npz_dataset_directory'], ARG_NPZ_DATASET_FILENAME)
+        if ARG_NPZ_FILE is not None:
+            ARG_NPZ_FILE = load_data.check_files_npz(ARG_NPZ_FILE.parent, ARG_NPZ_FILE.stem, args['input_npz_dataset_directory'], ARG_NPZ_DATASET_FILENAME)
             print(ARG_NPZ_FILE)
-        
             main(ARG_AUDIO_LOCATION, SMPLX_TAKE_IN=ARG_NPZ_FILE)
             create_scene.clear_character()
+            
+        if ARG_NPZ_DIR is not None:
+            SMPLX_LOCATION = ARG_NPZ_DIR
+            # SMPLX_TAKE = myPath(str(SMPLX_LOCATION) + '/' + SMPLX_FILENAME_IN + '.npz')
+            # print('write data to this one: ' + str(SMPLX_TAKE))
+            
+            if args['render_time'] is not False:
+                renderTime = 0
+                renderTime = compute_render_time(str(SMPLX_LOCATION))
+                print(renderTime)
+                print(float(renderTime/60/60/24))
+                exit()
+            
+            files = [f for f in os.listdir(SMPLX_LOCATION)]
+            i = 0
+            
+            for file in files:
+                
+                if not file.endswith(".npz"):
+                    continue
+                
+                # This needs to check for filename comparison and such
+                ARG_NPZ_FILE = load_data.check_files_npz(SMPLX_LOCATION, os.path.splitext(file)[0], args['input_npz_dataset_directory'], ARG_NPZ_DATASET_FILENAME)
+                print(ARG_NPZ_FILE)
+            
+                main(ARG_AUDIO_LOCATION, SMPLX_TAKE_IN=ARG_NPZ_FILE)
+                create_scene.clear_character()
 
 # START OF CODE
 all_start = time.time()
