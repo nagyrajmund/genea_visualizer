@@ -1,0 +1,16 @@
+{
+    "input_npz_dataset_directory": "D://GENEA_Leaderboard//beat_v2.0.0//beat_v2.0.0//beat_english_v2.0.0", 
+    "input_npz": null,
+    "input_npz_dir": null,
+    "output_dir": "D://GENEA_Leaderboard//_RENDER_OUTPUTS/",
+    "output_name": null,
+    "start": [],
+    "duration": [],
+    "png": false,
+    "video": true,
+    "res_x": 1440,
+    "res_y": 1080,
+    "framerate": 30,
+    "render_time": false,
+    "update_config": false
+}

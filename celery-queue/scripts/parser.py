@@ -24,12 +24,12 @@ def save_json_config(args_in):
     updated_config = {
         'input_npz': args_in['input_npz'],
         'input_npz_dir': args_in['input_npz_dir'],
-        'input_npz_dataset_filename': args_in['input_npz_dataset_filename'],
+        # 'input_npz_dataset_filename': args_in['input_npz_dataset_filename'],
         'input_npz_dataset_directory': args_in['input_npz_dataset_directory'],
-        'input_main_bvh': args_in['input_main_bvh'],
-        'input_intr_bvh': args_in['input_intr_bvh'],
-        'input_main_wav': args_in['input_main_wav'],
-        'input_intr_wav': args_in['input_intr_wav'],
+        # 'input_main_bvh': args_in['input_main_bvh'],
+        # 'input_intr_bvh': args_in['input_intr_bvh'],
+        # 'input_main_wav': args_in['input_main_wav'],
+        # 'input_intr_wav': args_in['input_intr_wav'],
         'output_dir': args_in['output_dir'],
         'output_name': args_in['output_name'],
         'start': args_in['start'],
@@ -69,11 +69,12 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Some description.", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     
     # INPUT
+    parser.add_argument('-csv', '--segment_csv', help='Input filename of a CSV file containing all segments to render.', type=myPath, default=config.get('segment_csv') if 'segment_csv' in config else None)
     parser.add_argument('-inf', '--input_npz', help='Input filename of the NPZ file.', type=myPath, default=config.get('input_npz') if 'input_npz' in config else None)
     parser.add_argument('-ind', '--input_npz_dir', help='Input directory with filenames of the NPZ format.', type=myPath, default=config.get('input_npz_dir') if 'input_npz_dir' in config else None)
-    parser.add_argument('-ina', '--audo_wav', help='Input WAV audio file from NPZ.', type=myPath, default=config.get('audo_wav') if 'audo_wav' in config else None)
-    # parser.add_argument('-idf', '--input_npz_dataset_filename', help='Input dataset filename.', type=myPath, default=config.get('input_npz_dataset_filename') if 'input_npz_dataset_filename' in config else None)
-    # parser.add_argument('-idd', '--input_npz_dataset_directory', help='Input dataset directory.', type=myPath, default=config.get('input_npz_dataset_directory') if 'input_npz_dataset_directory' in config else None)
+    parser.add_argument('-ina', '--audio_wav', help='Input WAV audio file from NPZ.', type=myPath, default=config.get('audio_wav') if 'audio_wav' in config else None)
+    parser.add_argument('-idf', '--input_npz_dataset_filename', help='Input dataset filename.', type=myPath, default=config.get('input_npz_dataset_filename') if 'input_npz_dataset_filename' in config else None)
+    parser.add_argument('-idd', '--input_npz_dataset_directory', help='Input dataset directory.', type=myPath, default=config.get('input_npz_dataset_directory') if 'input_npz_dataset_directory' in config else None)
     parser.add_argument('-ibf', '--input_bvh', help='Input filename of the main agent BVH motion file.', type=myPath, default=config.get('input_bvh') if 'input_bvh' in config else None)
     parser.add_argument('-ibw', '--input_bvh_wav', help='Input filename of the main agent WAV audio file.', type=myPath, default=config.get('input_bvh_wav') if 'input_bvh_wav' in config else None)
     
@@ -94,9 +95,6 @@ def parse_args():
     parser.add_argument('-v', '--video', 
                         help='Renders the result in an MP4-formatted video.', 
                         action=argparse.BooleanOptionalAction, default=config.get('video') if 'video' in config else False)
-    parser.add_argument('-m', "--visualization_mode", 
-                        help='The visualization mode to use for rendering.',
-                        type=str, choices=['full_body', 'upper_body'], default=config.get('visualization_mode') if 'visualization_mode' in config else 'full_body')
     parser.add_argument('-rx', '--res_x', 
                         help='The horizontal resolution for the rendered videos.', 
                         type=int, default=config.get('res_x') if 'res_x' in config else 1440)
@@ -118,6 +116,11 @@ def parse_args():
     
     final_args = vars(parser.parse_args(args=argv))
 
+    if final_args['input_bvh_wav'] is not None:
+        final_args['input_bvh_wav'] = final_args['input_bvh_wav'].resolve()
+    if final_args['output_dir'] is not None:
+        final_args['output_dir'] = final_args['output_dir'].resolve()
+        
     if len(config) == 0 or final_args['update_config'] is True:
         save_json_config(final_args)
     
